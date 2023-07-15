@@ -1,27 +1,41 @@
-import { ethers } from "hardhat";
+import { ethers, hardhatArguments } from 'hardhat';
+import * as Config from './config';
+import * as config from "../config.json";
+
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const unlockTime = currentTimestampInSeconds + 60;
 
-  const lockedAmount = ethers.parseEther("0.001");
+  await Config.initConfig();
 
-  const lock = await ethers.deployContract("Lock", [unlockTime], {
-    value: lockedAmount,
-  });
+  const network = hardhatArguments.network ? hardhatArguments.network : 'dev';
+  const [deployer] = await ethers.getSigners();
+  console.log('deploy from address: ', deployer.address);
+////////////////////////////////////////////////////////////////////////////////
+/////////////////////     DEPLOY TOKEN   ////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+  const flp = await ethers.deployContract("Floppy");
+  console.log('Floppy Token address: ', await flp.getAddress());
+  Config.setConfig(network + '.FLP', (await flp.getAddress()).toString());
 
-  await lock.waitForDeployment();
+  ////////////////////////////////////////////////////////////////////////////////
 
-  console.log(
-    `Lock with ${ethers.formatEther(
-      lockedAmount
-    )}ETH and unlock timestamp ${unlockTime} deployed to ${lock.target}`
-  );
+
+//////////////////////////////////////////////////////////////////////////////////
+/////////////////////   DEPLOY NFT   ////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+  // const flpnft = await ethers.deployContract("FLPNFT");
+  // console.log('FLP_NFT address: ', (await flpnft.getAddress()).toString());
+  // Config.setConfig(network + '.FLPNFT', (await flpnft.getAddress()).toString());
+
+//////////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////////
+  await Config.updateConfig();
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+main().then(() => process.exit(0))
+    .catch(err => {
+        console.error(err);
+        process.exit(1);
 });
