@@ -13,6 +13,7 @@ module.exports = {
       accounts: [process.env.PRIVATE_KEY],
       chainId: 11155111,
     }
+    
   },
   etherscan:{
     // URL: `https://api.bscscan.com/api`,

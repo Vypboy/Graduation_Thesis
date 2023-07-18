@@ -2,6 +2,8 @@
   "dev": {
     "FLP": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
   },
-  "sepolia": {},
+  "sepolia": {
+    "FLP": "0xf8b3DF5dDd0cF0a841DD25659E2b0cFc60e984dE"
+  },
   "main": {}
 }

@@ -45,4 +45,5 @@ contract Floppy is ERC20("Floppy", "FLP"), Ownable {
         console.log("cap: %s", cap);
         return super.transfer(_to, _amount);
     }
+
 }

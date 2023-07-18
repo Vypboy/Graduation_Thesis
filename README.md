@@ -4,10 +4,10 @@
 npm install
 
 # Compile contracts
-npx hardhar compile
+npx hardhat compile
 
 # Deploy contracts
-npx hardhar deploy
+npx hardhat run scripts/<file>
 
 # Test contracts
-npx hardhar test 
+npx hardhat test 
